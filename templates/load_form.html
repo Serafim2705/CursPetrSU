@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Курс: загрузка файлов</title>
+    </head>
+    <body>
+        {% extends "base.html" %}
+        <div class="content">
+            <hr>
+            {% block content %}
+            <div class="webd_user_file">
+                <div class="webd_user_header">
+                    <a href="/index" id="search_link">К поиску и просмотру работ</a> |
+                    <a href="https://kurs.cs.petrsu.ru/templates" id="templates_link">Шаблоны отчетов и
+                    презентаций</a>
+                    |
+                    <a href="/register" id="identity_link">Регистрация
+                        работы</a> |
+                        <a href="/upload">Назад к выбору года</a> |
+                        <a href="/login/exit">Выход</a>
+                    </div>
+                    <h2>Здравствуйте, {{ stud_name }}</h2>
+                    <h2>Загрузка файлов за {{ word_data.year }} уч. год</h2>
+                    <h3>Курс: {{ word_data.group[2:3] }}, Группа: {{ word_data.group }}</h3>
+                    <h4>Тема работы: {{ word_data.title }}</h4>
+                    <hr>
+                    <i>Ограничение на размер файла: 10Мб. Если требуется загрузить файл больше 10Мб,
+                        <br>
+                    то следует обратиться к системному администратору.</i>
+                    <div>
+                        {% if file_exists('report.pdf',word_data.student,word_data.year) %}
+                            <div class="user_file_label">
+                                <a href="/download/{{ word_data.student }}/{{ word_data.year }}/report.pdf"
+                                   target="_blank">Промежуточный отчет</a>
+                            </div>
+                            <form class="delete-form"
+                                  action="/delete/{{ word_data.year }}"
+                                  method="POST"
+                                  enctype="multipart/form-data">
+                                <input type="hidden" name="for-doc" class="user_for_doc" value="int-report">
+                                <input type="submit" name="delete-file" value="Удалить">
+                            </form>
+                        {% else %}
+                            <div class="user_file_label">
+                                <a target="_blank">Промежуточный отчет</a>
+                            </div>
+                        {% endif %}
+                        <i class="webd_user_result_success" id="result_int-report_success">
+                        </i>
+                        <div>
+                            <i class="webd_user_result_failure" id="result_int-report_failure">
+                            </i>
+                        </div>
+                        <span style="text-align:right; vertical-align:top;">Загрузка нового файла:</span>
+                        <form class="save-form"
+                              action="/upload/{{ word_data.year }}"
+                              method="POST"
+                              enctype="multipart/form-data">
+                            <input type="hidden" name="for-doc" class="user_for_doc" value="int-report">
+                            <input type="file"
+                                   required="required"
+                                   name="doc-file"
+                                   id="int-report"
+                                   style="width:70px;
+                                          margin-bottom:5px"
+                                   class="user_file"
+                                   accept="application/pdf"
+                                   onchange="validate_file(this)">
+                            <br>
+                            <input type="submit"
+                                   name="send-file"
+                                   id="submit_int-report"
+                                   value="Отправить в систему Курс">
+                        </form>
+                    </div>
+                    {% if message=="report" %}<p style="color: green;">Работа успешно загружена!</p>{% endif %}
+                    <br>
+                    <div>
+                        {% if file_exists('slides.pdf',word_data.student,word_data.year) %}
+                            <div class="user_file_label">
+                                <a href="/download/{{ word_data.student }}/{{ word_data.year }}/slides.pdf"
+                                   target="_blank">Промежуточная презентация</a>
+                            </div>
+                            <form class="delete-form"
+                                  action="/delete/{{ word_data.year }}"
+                                  method="POST"
+                                  enctype="multipart/form-data">
+                                <input type="hidden" name="for-doc" class="user_for_doc" value="int-slides">
+                                <input type="submit" name="delete-file" value="Удалить">
+                            </form>
+                        {% else %}
+                            <div class="user_file_label">
+                                <a target="_blank">Промежуточная презентация</a>
+                            </div>
+                        {% endif %}
+                        <i class="webd_user_result_success" id="result_int-slides_success">
+                        </i>
+                        <div>
+                            <i class="webd_user_result_failure" id="result_int-slides_failure">
+                            </i>
+                        </div>
+                        <span style="text-align:right; vertical-align:top;">Загрузка нового файла:</span>
+                        <form class="save-form"
+                              action="/upload/{{ word_data.year }}"
+                              method="POST"
+                              enctype="multipart/form-data">
+                            <input type="hidden" name="for-doc" class="user_for_doc" value="int-slides">
+                            <input type="file"
+                                   required="required"
+                                   name="doc-file"
+                                   id="int-slides"
+                                   style="width:70px;
+                                          margin-bottom:5px"
+                                   class="user_file"
+                                   accept="application/pdf"
+                                   onchange="validate_file(this)">
+                            <br>
+                            <input type="submit"
+                                   name="send-file"
+                                   id="submit_int-slides"
+                                   value="Отправить в систему Курс">
+                        </form>
+                    </div>
+                    {% if message=="slides" %}<p style="color: green;">Работа успешно загружена!</p>{% endif %}
+                    <br>
+                    {% if course|string in ['4','6'] %}
+                        <div>
+                            {% if file_exists('practic_report.pdf',word_data.student,word_data.year) %}
+                                <div class="user_file_label">
+                                    <a href="/download/{{ word_data.student }}/{{ word_data.year }}/practic_report.pdf"
+                                       target="_blank">Отчет по практике НИР</a>
+                                </div>
+                                <form class="delete-form"
+                                      action="/delete/{{ word_data.year }}"
+                                      method="POST"
+                                      enctype="multipart/form-data">
+                                    <input type="hidden" name="for-doc" class="user_for_doc" value="fin-preport">
+                                    <input type="submit" name="delete-file" value="Удалить">
+                                </form>
+                            {% else %}
+                                <div class="user_file_label">
+                                    <a target="_blank">Отчет по практике НИР</a>
+                                </div>
+                            {% endif %}
+                            <i class="webd_user_result_success" id="result_fin-preport_success">
+                            </i>
+                            <div>
+                                <i class="webd_user_result_failure" id="result_fin-preport_failure">
+                                </i>
+                            </div>
+                            <span style="text-align:right; vertical-align:top;">Загрузка нового файла:</span>
+                            <form class="save-form"
+                                  action="/upload/{{ word_data.year }}"
+                                  method="POST"
+                                  enctype="multipart/form-data">
+                                <input type="hidden" name="for-doc" class="user_for_doc" value="fin-preport">
+                                <input type="file"
+                                       required="required"
+                                       name="doc-file"
+                                       id="fin-preport"
+                                       style="width:70px;
+                                              margin-bottom:5px"
+                                       class="user_file"
+                                       accept="application/pdf"
+                                       onchange="validate_file(this)">
+                                <br>
+                                <input type="submit"
+                                       name="send-file"
+                                       id="submit_fin-preport"
+                                       value="Отправить в систему Курс">
+                            </form>
+                        </div>
+                        {% if message=="practic_report" %}<p style="color: green;">Работа успешно загружена!</p>{% endif %}
+                        <br>
+                    {% endif %}
+                    {% if course|string in ['4','6'] %}
+                        <div>
+                            {% if file_exists('final_report.pdf',word_data.student,word_data.year) %}
+                                <div class="user_file_label">
+                                    <a href="/download/{{ word_data.student }}/{{ word_data.year }}/final_report.pdf"
+                                       target="_blank">Текст ВКР</a>
+                                </div>
+                                <form class="delete-form"
+                                      action="/delete/{{ word_data.year }}"
+                                      method="POST"
+                                      enctype="multipart/form-data">
+                                    <input type="hidden" name="for-doc" class="user_for_doc" value="fin-report">
+                                    <input type="submit" name="delete-file" value="Удалить">
+                                </form>
+                            {% else %}
+                                <div class="user_file_label">
+                                    <a target="_blank">Текст ВКР</a>
+                                </div>
+                            {% endif %}
+                            <i class="webd_user_result_success" id="result_fin-report_success">
+                            </i>
+                            <div>
+                                <i class="webd_user_result_failure" id="result_fin-report_failure">
+                                </i>
+                            </div>
+                            <span style="text-align:right; vertical-align:top;">Загрузка нового файла:</span>
+                            <form class="save-form"
+                                  action="/upload/{{ word_data.year }}"
+                                  method="POST"
+                                  enctype="multipart/form-data">
+                                <input type="hidden" name="for-doc" class="user_for_doc" value="fin-report">
+                                <input type="file"
+                                       required="required"
+                                       name="doc-file"
+                                       id="fin-report"
+                                       style="width:70px;
+                                              margin-bottom:5px"
+                                       class="user_file"
+                                       accept="application/pdf"
+                                       onchange="validate_file(this)">
+                                <br>
+                                <input type="submit"
+                                       name="send-file"
+                                       id="submit_fin-report"
+                                       value="Отправить в систему Курс">
+                            </form>
+                        </div>
+                        {% if message=="final_report" %}<p style="color: green;">Работа успешно загружена!</p>{% endif %}
+                        <br>
+                    {% endif %}
+                    {% if course|string in ['4','6'] %}
+                        <div>
+                            {% if file_exists('final_slides.pdf',word_data.student,word_data.year) %}
+                                <div class="user_file_label">
+                                    <a href="/download/{{ word_data.student }}/{{ word_data.year }}/final_slides.pdf"
+                                       target="_blank">Презентация ВКР</a>
+                                </div>
+                                <form class="delete-form"
+                                      action="/delete/{{ word_data.year }}"
+                                      method="POST"
+                                      enctype="multipart/form-data">
+                                    <input type="hidden" name="for-doc" class="user_for_doc" value="fin-slides">
+                                    <input type="submit" name="delete-file" value="Удалить">
+                                </form>
+                            {% else %}
+                                <div class="user_file_label">
+                                    <a target="_blank">Презентация ВКР</a>
+                                </div>
+                            {% endif %}
+                            <i class="webd_user_result_success" id="result_fin-slides_success">
+                            </i>
+                            <div>
+                                <i class="webd_user_result_failure" id="result_fin-slides_failure">
+                                </i>
+                            </div>
+                            <span style="text-align:right; vertical-align:top;">Загрузка нового файла:</span>
+                            <form class="save-form"
+                                  action="/upload/{{ word_data.year }}"
+                                  method="POST"
+                                  enctype="multipart/form-data">
+                                <input type="hidden" name="for-doc" class="user_for_doc" value="fin-slides">
+                                <input type="file"
+                                       required="required"
+                                       name="doc-file"
+                                       id="fin-slides"
+                                       style="width:70px;
+                                              margin-bottom:5px"
+                                       class="user_file"
+                                       accept="application/pdf"
+                                       onchange="validate_file(this)">
+                                <br>
+                                <input type="submit"
+                                       name="send-file"
+                                       id="submit_fin-slides"
+                                       value="Отправить в систему Курс">
+                            </form>
+                        </div>
+                        {% if message=="final_slides" %}<p style="color: green;">Работа успешно загружена!</p>{% endif %}
+                        <br>
+                    {% endif %}
+                    {% if course|string in ['4','6'] %}
+                        <div>
+                            {% if file_exists('antiplagiat.pdf',word_data.student,word_data.year) %}
+                                <div class="user_file_label">
+                                    <a href="/download/{{ word_data.student }}/{{ word_data.year }}/antiplagiat.pdf"
+                                       target="_blank">Проверка на плагиат</a>
+                                </div>
+                                <form class="delete-form"
+                                      action="/delete/{{ word_data.year }}"
+                                      method="POST"
+                                      enctype="multipart/form-data">
+                                    <input type="hidden"
+                                           name="for-doc"
+                                           class="user_for_doc"
+                                           value="fin-antiplagiat">
+                                    <input type="submit" name="delete-file" value="Удалить">
+                                </form>
+                            {% else %}
+                                <div class="user_file_label">
+                                    <a target="_blank">Проверка на плагиат</a>
+                                </div>
+                            {% endif %}
+                            <i class="webd_user_result_success" id="result_fin-antiplagiat_success">
+                            </i>
+                            <div>
+                                <i class="webd_user_result_failure" id="result_fin-antiplagiat_failure">
+                                </i>
+                            </div>
+                            <span style="text-align:right; vertical-align:top;">Загрузка нового файла:</span>
+                            <form class="save-form"
+                                  action="/upload/{{ word_data.year }}"
+                                  method="POST"
+                                  enctype="multipart/form-data">
+                                <input type="hidden"
+                                       name="for-doc"
+                                       class="user_for_doc"
+                                       value="fin-antiplagiat">
+                                <input type="file"
+                                       required="required"
+                                       name="doc-file"
+                                       id="fin-antiplagiat"
+                                       style="width:70px;
+                                              margin-bottom:5px"
+                                       class="user_file"
+                                       accept="application/pdf"
+                                       onchange="validate_file(this)">
+                                <br>
+                                <input type="submit"
+                                       name="send-file"
+                                       id="submit_fin-antiplagiat"
+                                       value="Отправить в систему Курс">
+                            </form>
+                        </div>
+                        {% if message=="antiplagiat" %}<p style="color: green;">Работа успешно загружена!</p>{% endif %}
+                        <br>
+                    {% endif %}
+                    {% if course|string in ['4','6'] %}
+                        <div>
+                            {% if file_exists('review.pdf',word_data.student,word_data.year) %}
+                                <div class="user_file_label">
+                                    <a href="/download/{{ word_data.student }}/{{ word_data.year }}/review.pdf"
+                                       target="_blank">Отзыв руководителя</a>
+                                </div>
+                                <form class="delete-form"
+                                      action="/delete/{{ word_data.year }}"
+                                      method="POST"
+                                      enctype="multipart/form-data">
+                                    <input type="hidden"
+                                           name="for-doc"
+                                           class="user_for_doc"
+                                           value="fin-sup-review">
+                                    <input type="submit" name="delete-file" value="Удалить">
+                                </form>
+                            {% else %}
+                                <div class="user_file_label">
+                                    <a target="_blank">Отзыв руководителя</a>
+                                </div>
+                            {% endif %}
+                            <i class="webd_user_result_success" id="result_fin-sup-review_success">
+                            </i>
+                            <div>
+                                <i class="webd_user_result_failure" id="result_fin-sup-review_failure">
+                                </i>
+                            </div>
+                            <span style="text-align:right; vertical-align:top;">Загрузка нового файла:</span>
+                            <form class="save-form"
+                                  action="/upload/{{ word_data.year }}"
+                                  method="POST"
+                                  enctype="multipart/form-data">
+                                <input type="hidden"
+                                       name="for-doc"
+                                       class="user_for_doc"
+                                       value="fin-sup-review">
+                                <input type="file"
+                                       required="required"
+                                       name="doc-file"
+                                       id="fin-sup-review"
+                                       style="width:70px;
+                                              margin-bottom:5px"
+                                       class="user_file"
+                                       accept="application/pdf"
+                                       onchange="validate_file(this)">
+                                <br>
+                                <input type="submit"
+                                       name="send-file"
+                                       id="submit_fin-sup-review"
+                                       value="Отправить в систему Курс">
+                            </form>
+                        </div>
+                        {% if message=="review" %}<p style="color: green;">Работа успешно загружена!</p>{% endif %}
+                        <br>
+                    {% endif %}
+                    {% if course|string in ['1','2','3','5'] %}
+                        <div>
+                            {% if file_exists('final_report.pdf',word_data.student,word_data.year) %}
+                                <div class="user_file_label">
+                                    <a href="/download/{{ word_data.student }}/{{ word_data.year }}/final_report.pdf"
+                                       target="_blank">Окончательный отчет</a>
+                                </div>
+                                <form class="delete-form"
+                                      action="/delete/{{ word_data.year }}"
+                                      method="POST"
+                                      enctype="multipart/form-data">
+                                    <input type="hidden" name="for-doc" class="user_for_doc" value="fin-report">
+                                    <input type="submit" name="delete-file" value="Удалить">
+                                </form>
+                            {% else %}
+                                <div class="user_file_label">
+                                    <a target="_blank">Окончательный отчет</a>
+                                </div>
+                            {% endif %}
+                            <i class="webd_user_result_success" id="result_fin-report_success">
+                            </i>
+                            <div>
+                                <i class="webd_user_result_failure" id="result_fin-report_failure">
+                                </i>
+                            </div>
+                            <span style="text-align:right; vertical-align:top;">Загрузка нового файла:</span>
+                            <form class="save-form"
+                                  action="/upload/{{ word_data.year }}"
+                                  method="POST"
+                                  enctype="multipart/form-data">
+                                <input type="hidden" name="for-doc" class="user_for_doc" value="fin-report">
+                                <input type="file"
+                                       required="required"
+                                       name="doc-file"
+                                       id="fin-report"
+                                       style="width:70px;
+                                              margin-bottom:5px"
+                                       class="user_file"
+                                       accept="application/pdf"
+                                       onchange="validate_file(this)">
+                                <br>
+                                <input type="submit"
+                                       name="send-file"
+                                       id="submit_fin-report"
+                                       value="Отправить в систему Курс">
+                            </form>
+                        </div>
+                        {% if message=="final_report" %}<p style="color: green;">Работа успешно загружена!</p>{% endif %}
+                        <br>
+                    {% endif %}
+                    {% if course|string in ['1','2','3','5'] %}
+                        <div>
+                            {% if file_exists('final_slides.pdf',word_data.student,word_data.year) %}
+                                <div class="user_file_label">
+                                    <a href="/download/{{ word_data.student }}/{{ word_data.year }}/final_slides.pdf"
+                                       target="_blank">Окончательная презентация</a>
+                                </div>
+                                <form class="delete-form"
+                                      action="/delete/{{ word_data.year }}"
+                                      method="POST"
+                                      enctype="multipart/form-data">
+                                    <input type="hidden" name="for-doc" class="user_for_doc" value="fin-slides">
+                                    <input type="submit" name="delete-file" value="Удалить">
+                                </form>
+                            {% else %}
+                                <div class="user_file_label">
+                                    <a target="_blank">Окончательная презентация</a>
+                                </div>
+                            {% endif %}
+                            <i class="webd_user_result_success" id="result_fin-slides_success">
+                            </i>
+                            <div>
+                                <i class="webd_user_result_failure" id="result_fin-slides_failure">
+                                </i>
+                            </div>
+                            <span style="text-align:right; vertical-align:top;">Загрузка нового файла:</span>
+                            <form class="save-form"
+                                  action="/upload/{{ word_data.year }}"
+                                  method="POST"
+                                  enctype="multipart/form-data">
+                                <input type="hidden" name="for-doc" class="user_for_doc" value="fin-slides">
+                                <input type="file"
+                                       required="required"
+                                       name="doc-file"
+                                       id="fin-slides"
+                                       style="width:70px;
+                                              margin-bottom:5px"
+                                       class="user_file"
+                                       accept="application/pdf"
+                                       onchange="validate_file(this)">
+                                <br>
+                                <input type="submit"
+                                       name="send-file"
+                                       id="submit_fin-slides"
+                                       value="Отправить в систему Курс">
+                            </form>
+                        </div>
+                        {% if message=="final_slides" %}<p style="color: green;">Работа успешно загружена!</p>{% endif %}
+                        <br>
+                    {% endif %}
+                    {% if course|string == '6' %}
+                        <div>
+                            {% if file_exists('final_review.pdf',word_data.student,word_data.year) %}
+                                <div class="user_file_label">
+                                    <a href="/download/{{ word_data.student }}/{{ word_data.year }}/final_review.pdf"
+                                       target="_blank">Рецензия</a>
+                                </div>
+                                <form class="delete-form"
+                                      action="/delete/{{ word_data.year }}"
+                                      method="POST"
+                                      enctype="multipart/form-data">
+                                    <input type="hidden" name="for-doc" class="user_for_doc" value="fin-review">
+                                    <input type="submit" name="delete-file" value="Удалить">
+                                </form>
+                            {% else %}
+                                <div class="user_file_label">
+                                    <a target="_blank">Рецензия</a>
+                                </div>
+                            {% endif %}
+                            <i class="webd_user_result_success" id="result_fin-review_success">
+                            </i>
+                            <div>
+                                <i class="webd_user_result_failure" id="result_fin-review_failure">
+                                </i>
+                            </div>
+                            <span style="text-align:right; vertical-align:top;">Загрузка нового файла:</span>
+                            <form class="save-form"
+                                  action="/upload/{{ word_data.year }}"
+                                  method="POST"
+                                  enctype="multipart/form-data">
+                                <input type="hidden" name="for-doc" class="user_for_doc" value="fin-review">
+                                <input type="file"
+                                       required="required"
+                                       name="doc-file"
+                                       id="fin-review"
+                                       style="width:70px;
+                                              margin-bottom:5px"
+                                       class="user_file"
+                                       accept="application/pdf"
+                                       onchange="validate_file(this)">
+                                <br>
+                                <input type="submit"
+                                       name="send-file"
+                                       id="submit_fin-review"
+                                       value="Отправить в систему Курс">
+                            </form>
+                        </div>
+                        {% if message=="final_review" %}<p style="color: green;">Работа успешно загружена!</p>{% endif %}
+                        <br>
+                    {% endif %}
+                </div>
+                 {% endblock content %}
+                <hr>
+            </div>
+        </body>
+    </html>

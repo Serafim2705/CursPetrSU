@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Курс: загрузка файлов</title>
+    </head>
+    <body>
+        {% extends "base.html" %}
+        <div class="content">
+            <hr>
+            {% block content %}
+                <div class="webd_user_file">
+                    <div class="webd_user_header">
+                        <a href="/index" id="search_link">К поиску и просмотру работ</a> |
+                        <a href="https://kurs.cs.petrsu.ru/templates" id="templates_link">Шаблоны отчетов и
+                        презентаций</a>
+                        |
+                        <a href="/register" id="identity_link">Регистрация
+                            работы</a> |
+                            <a href="/upload" id="upload_link" class="user_no_file">Загрузка файлов</a> |
+                            <a href="/login/exit">Выход</a>
+                        </div>
+                        <h2>Здравствуйте, {{ stud_name }}!</h2>
+                        <h3>Добро пожаловать на страницу загрузки работ.</h3>
+                        <p>Выберите календарный год начала курсовой работы :</p>
+                        <ul>
+                            {% for e in available_years %}
+                                <li>
+                                    <a href="/upload/{{ e.year }}">{{ e.year }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <!--       <form class="webd_user_form" method="POST">-->
+                        <!--         <label for="inp_year">Выберите год</label>-->
+                        <!--            <select name="years" id="inp_year" class="inp txt_inp">-->
+                        <!--                    {% for e in available_years %}-->
+                        <!--                        <option value="{{ e.year }}"-->
+                        <!--                                {% if chosen_year is defined %}-->
+                        <!--                                    {% if  e.year|string == chosen_year|string %}-->
+                        <!--                                selected="selected"-->
+                        <!--                                    {% endif %}-->
+                        <!--                                {% endif %}>-->
+                        <!--                            {{ e.year }}</option>-->
+                        <!--                    {% endfor %}-->
+                        <!--            </select>-->
+                        <!--		<input type="submit" value="Найти" class="inp btn_save" name="yeeaar">-->
+                        <!--	</form>-->
+                        <!--    <h2>Загрузка файлов за {{year}} уч. год</h2>-->
+                        <!--	<h3>Курс: {{curs}}, Группа: {{group}}</h3>-->
+                        <!--    <hr>-->
+                        <!--    <i>Ограничение на размер файла: 10Мб. Если требуется загрузить файл больше 10Мб, <br>-->
+                        <!--       то следует обратиться к системному администратору.</i>-->
+                        <!--    -->
+                        <!--    <div>-->
+                        <!--        <div class="user_file_label"><a target="_blank">Промежуточный отчет</a></div>-->
+                        <!--        <i class="webd_user_result_success" id="result_int-report_success">-->
+                        <!--            -->
+                        <!--        </i>-->
+                        <!--        -->
+                        <!--        <div>-->
+                        <!--            <i class="webd_user_result_failure" id="result_int-report_failure">-->
+                        <!--                -->
+                        <!--            </i>-->
+                        <!--        </div>-->
+                        <!--        <span style="text-align:right; vertical-align:top;">Загрузка нового файла: </span>-->
+                        <!--        <form class="save-form"
+              action="/upload"
+              method="POST"
+              enctype="multipart/form-data">-->
+                        <!--            <input type="hidden" name="for-doc" class="user_for_doc" value="int-report">-->
+                        <!--            -->
+                        <!--            <input type="file"
+                   required="required"
+                   name="doc-file"
+                   id="int-report"
+                   style="width:70px;
+                          margin-bottom:5px"
+                   class="user_file"
+                   accept="application/pdf"
+                   onchange="validate_file(this)"><br>-->
+                        <!--            <input type="submit"
+                   name="send-file"
+                   id="submit_int-report"
+                   value="Отправить в систему Курс">-->
+                        <!--        </form>-->
+                        <!--    </div>-->
+                        <!--    <br>-->
+                        <!--    -->
+                        <!--    <div>-->
+                        <!--        <div class="user_file_label"><a target="_blank">Промежуточная презентация</a></div>-->
+                        <!--        <i class="webd_user_result_success" id="result_int-slides_success">-->
+                        <!--            -->
+                        <!--        </i>-->
+                        <!--        -->
+                        <!--        <div>-->
+                        <!--            <i class="webd_user_result_failure" id="result_int-slides_failure">-->
+                        <!--                -->
+                        <!--            </i>-->
+                        <!--        </div>-->
+                        <!--        <span style="text-align:right; vertical-align:top;">Загрузка нового файла: </span>-->
+                        <!--        <form class="save-form"
+              action="/upload"
+              method="POST"
+              enctype="multipart/form-data">-->
+                        <!--            <input type="hidden" name="for-doc" class="user_for_doc" value="int-slides">-->
+                        <!--            -->
+                        <!--            <input type="file"
+                   required="required"
+                   name="doc-file"
+                   id="int-slides"
+                   style="width:70px;
+                          margin-bottom:5px"
+                   class="user_file"
+                   accept="application/pdf"
+                   onchange="validate_file(this)"><br>-->
+                        <!--            <input type="submit"
+                   name="send-file"
+                   id="submit_int-slides"
+                   value="Отправить в систему Курс">-->
+                        <!--        </form>-->
+                        <!--    </div>-->
+                        <!--    <br>-->
+                        <!--    -->
+                        <!--    <div>-->
+                        <!--        <div class="user_file_label"><a target="_blank">Отчет по практике НИР</a></div>-->
+                        <!--        <i class="webd_user_result_success" id="result_fin-preport_success">-->
+                        <!--            -->
+                        <!--        </i>-->
+                        <!--        -->
+                        <!--        <div>-->
+                        <!--            <i class="webd_user_result_failure" id="result_fin-preport_failure">-->
+                        <!--                -->
+                        <!--            </i>-->
+                        <!--        </div>-->
+                        <!--        <span style="text-align:right; vertical-align:top;">Загрузка нового файла: </span>-->
+                        <!--        <form class="save-form"
+              action="/upload"
+              method="POST"
+              enctype="multipart/form-data">-->
+                        <!--            <input type="hidden" name="for-doc" class="user_for_doc" value="fin-preport">-->
+                        <!--            -->
+                        <!--            <input type="file"
+                   required="required"
+                   name="doc-file"
+                   id="fin-preport"
+                   style="width:70px;
+                          margin-bottom:5px"
+                   class="user_file"
+                   accept="application/pdf"
+                   onchange="validate_file(this)"><br>-->
+                        <!--            <input type="submit"
+                   name="send-file"
+                   id="submit_fin-preport"
+                   value="Отправить в систему Курс">-->
+                        <!--        </form>-->
+                        <!--    </div>-->
+                        <!--    <br>-->
+                        <!--    -->
+                        <!--    <div>-->
+                        <!--        <div class="user_file_label"><a target="_blank">Текст ВКР</a></div>-->
+                        <!--        <i class="webd_user_result_success" id="result_fin-report_success">-->
+                        <!--            -->
+                        <!--        </i>-->
+                        <!--        -->
+                        <!--        <div>-->
+                        <!--            <i class="webd_user_result_failure" id="result_fin-report_failure">-->
+                        <!--                -->
+                        <!--            </i>-->
+                        <!--        </div>-->
+                        <!--        <span style="text-align:right; vertical-align:top;">Загрузка нового файла: </span>-->
+                        <!--        <form class="save-form"
+              action="/upload"
+              method="POST"
+              enctype="multipart/form-data">-->
+                        <!--            <input type="hidden" name="for-doc" class="user_for_doc" value="fin-report">-->
+                        <!--            -->
+                        <!--            <input type="file"
+                   required="required"
+                   name="doc-file"
+                   id="fin-report"
+                   style="width:70px;
+                          margin-bottom:5px"
+                   class="user_file"
+                   accept="application/pdf"
+                   onchange="validate_file(this)"><br>-->
+                        <!--            <input type="submit"
+                   name="send-file"
+                   id="submit_fin-report"
+                   value="Отправить в систему Курс">-->
+                        <!--        </form>-->
+                        <!--    </div>-->
+                        <!--    <br>-->
+                        <!--    -->
+                        <!--    <div>-->
+                        <!--        <div class="user_file_label"><a target="_blank">Презентация ВКР</a></div>-->
+                        <!--        <i class="webd_user_result_success" id="result_fin-slides_success">-->
+                        <!--            -->
+                        <!--        </i>-->
+                        <!--        -->
+                        <!--        <div>-->
+                        <!--            <i class="webd_user_result_failure" id="result_fin-slides_failure">-->
+                        <!--                -->
+                        <!--            </i>-->
+                        <!--        </div>-->
+                        <!--        <span style="text-align:right; vertical-align:top;">Загрузка нового файла: </span>-->
+                        <!--        <form class="save-form"
+              action="/upload"
+              method="POST"
+              enctype="multipart/form-data">-->
+                        <!--            <input type="hidden" name="for-doc" class="user_for_doc" value="fin-slides">-->
+                        <!--            -->
+                        <!--            <input type="file"
+                   required="required"
+                   name="doc-file"
+                   id="fin-slides"
+                   style="width:70px;
+                          margin-bottom:5px"
+                   class="user_file"
+                   accept="application/pdf"
+                   onchange="validate_file(this)"><br>-->
+                        <!--            <input type="submit"
+                   name="send-file"
+                   id="submit_fin-slides"
+                   value="Отправить в систему Курс">-->
+                        <!--        </form>-->
+                        <!--    </div>-->
+                        <!--    <br>-->
+                        <!--    -->
+                        <!--    <div>-->
+                        <!--        <div class="user_file_label"><a target="_blank">Проверка на плагиат</a></div>-->
+                        <!--        <i class="webd_user_result_success" id="result_fin-antiplagiat_success">-->
+                        <!--            -->
+                        <!--        </i>-->
+                        <!--        -->
+                        <!--        <div>-->
+                        <!--            <i class="webd_user_result_failure" id="result_fin-antiplagiat_failure">-->
+                        <!--                -->
+                        <!--            </i>-->
+                        <!--        </div>-->
+                        <!--        <span style="text-align:right; vertical-align:top;">Загрузка нового файла: </span>-->
+                        <!--        <form class="save-form"
+              action="/upload"
+              method="POST"
+              enctype="multipart/form-data">-->
+                        <!--            <input type="hidden"
+                   name="for-doc"
+                   class="user_for_doc"
+                   value="fin-antiplagiat">-->
+                        <!--            -->
+                        <!--            <input type="file"
+                   required="required"
+                   name="doc-file"
+                   id="fin-antiplagiat"
+                   style="width:70px;
+                          margin-bottom:5px"
+                   class="user_file"
+                   accept="application/pdf"
+                   onchange="validate_file(this)"><br>-->
+                        <!--            <input type="submit"
+                   name="send-file"
+                   id="submit_fin-antiplagiat"
+                   value="Отправить в систему Курс">-->
+                        <!--        </form>-->
+                        <!--    </div>-->
+                        <!--    <br>-->
+                        <!--    -->
+                        <!--    <div>-->
+                        <!--        <div class="user_file_label"><a target="_blank">Отзыв руководителя</a></div>-->
+                        <!--        <i class="webd_user_result_success" id="result_fin-sup-review_success">-->
+                        <!--            -->
+                        <!--        </i>-->
+                        <!--        -->
+                        <!--        <div>-->
+                        <!--            <i class="webd_user_result_failure" id="result_fin-sup-review_failure">-->
+                        <!--                -->
+                        <!--            </i>-->
+                        <!--        </div>-->
+                        <!--        <span style="text-align:right; vertical-align:top;">Загрузка нового файла: </span>-->
+                        <!--        <form class="save-form"
+              action="/upload"
+              method="POST"
+              enctype="multipart/form-data">-->
+                        <!--            <input type="hidden"
+                   name="for-doc"
+                   class="user_for_doc"
+                   value="fin-sup-review">-->
+                        <!--            -->
+                        <!--            <input type="file"
+                   required="required"
+                   name="doc-file"
+                   id="fin-sup-review"
+                   style="width:70px;
+                          margin-bottom:5px"
+                   class="user_file"
+                   accept="application/pdf"
+                   onchange="validate_file(this)"><br>-->
+                        <!--            <input type="submit"
+                   name="send-file"
+                   id="submit_fin-sup-review"
+                   value="Отправить в систему Курс">-->
+                        <!--        </form>-->
+                        <!--    </div>-->
+                        <!--    <br>-->
+                        <!--    -->
+                        <!--    <div>-->
+                        <!--        <div class="user_file_label"><a target="_blank">Рецензия</a></div>-->
+                        <!--        <i class="webd_user_result_success" id="result_fin-review_success">-->
+                        <!--            -->
+                        <!--        </i>-->
+                        <!--        -->
+                        <!--        <div>-->
+                        <!--            <i class="webd_user_result_failure" id="result_fin-review_failure">-->
+                        <!--                -->
+                        <!--            </i>-->
+                        <!--        </div>-->
+                        <!--        <span style="text-align:right; vertical-align:top;">Загрузка нового файла: </span>-->
+                        <!--        <form class="save-form"
+              action="/upload"
+              method="POST"
+              enctype="multipart/form-data">-->
+                        <!--            <input type="hidden" name="for-doc" class="user_for_doc" value="fin-review">-->
+                        <!--            -->
+                        <!--            <input type="file"
+                   required="required"
+                   name="doc-file"
+                   id="fin-review"
+                   style="width:70px;
+                          margin-bottom:5px"
+                   class="user_file"
+                   accept="application/pdf"
+                   onchange="validate_file(this)"><br>-->
+                        <!--            <input type="submit"
+                   name="send-file"
+                   id="submit_fin-review"
+                   value="Отправить в систему Курс">-->
+                        <!--        </form>-->
+                        <!--    </div>-->
+                        <!--    <br>-->
+                        <!--    -->
+                    </div>
+                {% endblock content %}
+                <hr>
+            </div>
+        </body>
+    </html>

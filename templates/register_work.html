@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Курс: регистрация работы</title>
+    </head>
+    <body>
+        {% extends "base.html" %}
+        <div class="content">
+            <hr>
+            {% block content %}
+                <div id="webd_user">
+                    <div class="webd_user_header">
+                        <a href="/index" id="search_link">К поиску и просмотру работ</a> |
+                        <a href="https://kurs.cs.petrsu.ru/templates" id="templates_link">Шаблоны отчетов и
+                        презентаций</a>
+                        |
+                        <a href="/register" id="identity_link" class="user_no_file">Регистрация
+                            работы</a> |
+                            <a href="/upload" id="upload_link">Загрузка файлов</a> |
+                            <a href="/login/exit">Выход</a>
+                        </div>
+                        <h2>Здравствуйте, {{ stud_name }}!</h2>
+                        <h3>Добро пожаловать на страницу регистрации работ.</h3>
+                        <p>Выберите календарный год начала курсовой работы :</p>
+                        <ul>
+                            {% for e in available_years %}
+                                <li>
+                                    <a href="/register/{{ e.year }}">{{ e.year }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endblock content %}
+                <hr>
+            </div>
+        </body>
+    </html>

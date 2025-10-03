@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<!-- saved from url=(0036)https://kurs.cs.petrsu.ru/#webd_form -->
+<html lang="ru"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style>
+    table {
+        width: 570px;
+        table-layout: fixed;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid black;
+        word-wrap: break-word; /* Разрешить перенос слов */
+    }
+
+    th {
+        text-align: left;
+    }
+</style>
+
+    </head>
+    <body>
+
+
+        <div id="start_table"></div>
+    {% if data is defined %}
+
+     {% for year in data.keys() %}
+            <h2 >Год {{ year }} Записей: {{count_data[year]['count']}}</h2>
+                {% for dep in data[year].keys() %}
+                <h3 >Кафедра {{ dep }} Записей: {{count_data[year][dep]['count']}}</h3>
+
+                    {% for group in data[year][dep].keys() %}
+                         <h4 >Группа {{ group }} Записей: {{count_data[year][dep][group]}}</h4>
+
+                         <table  border="1" style="width: 570px; table-layout: fixed;">
+                                <caption ></caption>
+                                <tbody><tr >
+                                    <th  width="20">
+                                        №
+                                    </th>
+                                    <th  width="200">
+                                        Название работы
+                                    </th>
+                                    <th  width="120">
+                                        Ф.И.О. студента
+                                    </th>
+
+                                    <th  width="120">
+                                        Ф.И.О. руководителя
+                                    </th>
+
+                                    <th  width="50">
+                                        Пр. отчет
+                                    </th>
+
+                                    <th  width="50">
+                                        Пр. ЭП
+                                    </th>
+
+                                    <th  width="50">
+                                        Отчет
+                                    </th>
+
+                                    <th  width="50">
+                                        ЭП
+                                    </th>
+                                    <th  width="300">
+                                        Подпись руководителя
+                                    </th>
+
+                                    </tr>
+                        {% set nsc = namespace(counter=0) %}
+                        {% for e in data[year][dep][group] %}
+                            {% set nsc.counter=nsc.counter+1 %}
+                             <tr >
+                            <td width="20">{{nsc.counter}}</td>
+                            <td width="200">{{e.title}}</td>
+                            <td width="120">{{e.name}}</td>
+
+                            <td width="120">{{e.tutor}}</td>
+
+                           {% if file_exists('report.pdf',e.student,year) %}
+                            <td width="120">
+
+                                Есть
+
+                            </td>
+                                {% else %}
+                            <td width="50">
+
+                                Нет
+                            </td>
+                            {% endif %}
+
+                                 {% if file_exists('slides.pdf',e.student,year) %}
+                            <td width="50">
+
+                                Есть
+
+                            </td>
+                                {% else %}
+                            <td width="50">
+
+                                Нет
+                            </td>
+                            {% endif %}
+
+
+                                 {% if file_exists('final_report.pdf',e.student,year) %}
+                            <td width="50">
+
+                                Есть
+
+                            </td>
+                                {% else %}
+                            <td width="50">
+                                Нет
+
+                            </td>
+                            {% endif %}
+
+                                 {% if file_exists('final_slides.pdf',e.student,year) %}
+                            <td width="50">
+
+                                Есть
+
+                            </td>
+                                {% else %}
+                            <td width="50">
+
+                            Нет
+                            </td>
+                            {% endif %}
+                              <td width="300">
+
+
+                            </td>
+
+
+                             </tr>
+                        {% endfor %}
+                        </table>
+                    {% endfor %}
+                {% endfor %}
+            {% endfor %}
+
+
+    {% endif %}
+
+<!--                <a href="#start_table">Перейти к моему элементу</a>-->
+</body></html>

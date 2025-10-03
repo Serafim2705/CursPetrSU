@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% block head %}
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet"
+              href="{{ url_for('static',filename='css/style.css') }}">
+        <link media="all"
+              rel="stylesheet"
+              type="text/css"
+              href="{{ url_for('static',filename='css/webd.min.css') }}">
+        <script src="{{url_for('static',filename='js/jquery.min.js') }}"></script>
+        <script src="{{url_for('static',filename='js/webd.min.js') }}"></script>
+<!--        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+        {% endblock head %}
+        <title>Курс: регистрация работы</title>
+    </head>
+    <body>
+        {% block nav_bar %}
+            <div align="center" class="header">
+                <img src="{{ url_for('static',filename='img/cs_logo.png') }}"
+                     align="left"
+                     alt="">
+                <div align="right" style="float:right;text-align: center;">
+                    <img src="{{ url_for('static',filename='img/tux.svg') }}"
+                         style="height:80px"
+                         alt="(c) Larry Ewing, Simon Budig, Garrett LeSage"
+                         title="(c) Larry Ewing, Simon Budig, Garrett LeSage">
+                    <br>
+                    <span style="font-size:12px;">с 1994 г.</span>
+                </div>
+                <h1 id="title">
+                    <a href="https://cs.petrsu.ru/">Кафедра Информатики и Математического Обеспечения</a>
+                </h1>
+                <a href="http://www.petrsu.ru/">ПетрГУ</a> |
+                <a href="https://imit.petrsu.ru/">ИМиИТ</a> |
+                <a href="https://cs.petrsu.ru/department/index.php.ru">О кафедре</a> |
+                <a href="https://cs.petrsu.ru/projects.php.ru">Проекты</a> |
+                <a href="https://cs.petrsu.ru/lab/index.php.ru">Лаборатория ИТС</a> |
+                <a href="https://cs.petrsu.ru/fdpw/index.php.ru">Семинары НФИ/AMICT</a>
+                <br>
+                <a href="https://cs.petrsu.ru/staff/index.php.ru">Сотрудники</a> |
+                <a href="https://cs.petrsu.ru/studies/index.php.ru">Учебный процесс</a> |
+                <a href="https://cs.petrsu.ru/studies/tabel_kalendar_22-23.pdf">Табель-календарь</a> |
+                <a href="https://cs.petrsu.ru/studies/kurs/kurs.php.ru">Курсовые и выпускные работы</a>
+                <br>
+                <a href="https://cs.petrsu.ru/facilities/index.php.ru">Вычислительные ресурсы</a> |
+                <a href="https://cs.petrsu.ru/publications/index.php.ru">Публикации</a> |
+                <a href="https://cs.petrsu.ru/news/index.php.ru">Архив новостей</a> |
+                <a href="https://cs.petrsu.ru/contact/index.php.ru">Контактная информация</a><a href="https://cs.petrsu.ru/contact/index.php.en">(English)</a>
+                <br clear="all">
+            </div>
+        {% endblock nav_bar %}
+        <div class="content">
+            <hr>
+            <h1>
+                <a href="https://kurs.cs.petrsu.ru/" id="webd_title">Система <span style="color:#0E0EB3;">Курс</span></a>
+            </h1>
+            {% block content %}
+
+            {% endblock content %}
+            <hr>
+        </div>
+        {% block footer %}
+            <div class="footer">
+                <div style="width:450px;">
+                    <address>
+                        <!--i>Замечания по работе сервера: <a href="mailto:webmaster@cs.petrsu.ru">webmaster@cs.karelia.ru</a></i><br /-->
+                        <i>Вопросы и замечания по системе Курс: <a href="mailto:chistyak@cs.petrsu.ru">Д.Б.Чистяков</a></i>
+                        <br>
+                        <i style="display:none">Последние изменения: <span id="webd_last_edited"></span></i>
+                    </address>
+                </div>
+                <div style="width:550px; text-align:right; float:right;">
+                    <i>Руководитель работы: заведующий кафедрой ИМО, Ю.А.Богоявленский</i>
+                    <br>
+                    <i>Разработчики: А.А.Андреев, В.М.Димитров, С.С.Серов</i>
+                    <br>
+                    <i>Системный администратор: М.А.Крышень</i>
+                </div>
+            </div>
+        {% endblock footer %}
+
+        {% block table %}
+        {% endblock table %}
+    </body>
+</html>

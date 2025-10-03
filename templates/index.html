@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <title>Система Курс</title>
+    </head>
+    <body>
+        {% extends "base.html" %}
+        <div class="content">
+            <hr>
+            {% block content %}
+                <div id="webd">
+                    <div id="webd_left_side" class="webd_sides">
+                        <div class="webd_user_header">
+                            <a href="/index" id="search_link">К поиску и просмотру работ</a> |
+                            <a href="https://kurs.cs.petrsu.ru/templates" id="templates_link">Шаблоны отчетов и
+                            презентаций</a>
+                            |
+                            <a href="/register" id="identity_link">Регистрация
+                                работы</a> |
+                                <a href="/upload" id="upload_link">Загрузка файлов</a> |
+<!--                                <a href="http://localhost:8888/query">Контекстный поиск</a> |-->
+                                <a href="/login/exit">Выход</a>
+                            </div>
+                            <p>
+                                Система предназначена для учета курсовых и выпускных работ студентов,
+                                загрузки, хранения, поиска и демонстрации файлов презентаций и отчетов.
+                            </p>
+                            <p>
+                                Для корректного учета работ студент обязан в начале учебного года <b>зарегистрировать
+                                данные о работе</b>. Это необходимо, поскольку возможны изменения руководителя и/или темы работы.
+                                Если изменений по сравнению с предыдущим учебным годом не было, то регистрация выполняется
+                                нажатием кнопки "Скопировать" на странице регистрации. Для обеспечения актуальности данных о работе,
+                                выполняемой в текущем учебном году, их следует корректировать.
+                                Регистрацию желательно выполнить сразу после согласования темы работы с руководителем.
+                            </p>
+                            <p>
+                                Студент обязан <b>загрузить файлы презентации и отчета</b> (формат только PDF):
+                            </p>
+                            <ul>
+                                <li>
+                                    промежуточные — 2, 3 и 5 курсы до 30 декабря текущего года, выпускники 4 и 6 курсов —
+                                    за два дня до начала сессии согласно графику учебного процесса текущего учебного года;
+                                </li>
+                                <li>окончательные — до даты защиты курсовых работ или предзащиты выпускных работ.</li>
+                            </ul>
+                            Правила, шаблоны и инструменты подготовки презентаций и отчетов см. в разделах 2 и 3 документа
+                            <a href="http://www.cs.petrsu.ru/studies/kurs/kurs.php.ru">Курсовые и выпускные работы</a>
+                            соответственно.
+                            <p></p>
+                            <p>
+                                Функции регистрации и загрузки файлов отчетов доступны только студентам,
+                                имеющим учетные записи (логин, пароль) в вычислительной системе кафедры ИМО,
+                                после входа в систему «Курс».
+                            </p>
+                        </div>
+
+                        <form id="webd_form" method="POST">
+                            <h2>Поиск и просмотр работ</h2>
+                            <div class="labeled_select"
+                                 title="Для списка доступен множественный выбор. Для этого нужно либо провести указателем с зажатой левой кнопкой мыши по смежным группам, либо выбрать отдельностоящие группы одиночным нажатием на левую кнопку мыши с зажатой клавишей Ctrl.">
+                                <label for="inp_year">Календарный год начала работы</label>
+                                <br>
+                                <select name="years"
+                                        id="inp_year"
+                                        class="inp txt_inp"
+                                        size="7"
+                                        multiple="multiple">
+                                    <option value=""selected="selected">Все</option>
+                                    {% for i in range(curr_year, 2010,-1) %}<option value="{{ i }}">{{ i }}</option>{% endfor %}
+                                </select>
+                            </div>
+                            <div class="labeled_select"
+                                 title="Для списка доступен множественный выбор. Для этого нужно либо провести указателем с зажатой левой кнопкой мыши по смежным группам, либо выбрать отдельностоящие группы одиночным нажатием на левую кнопку мыши с зажатой клавишей Ctrl.">
+                                <label for="inp_group">Группа</label>
+                                <br>
+                                <select name="groups"
+                                        id="inp_group"
+                                        class="inp txt_inp"
+                                        size="7"
+                                        multiple="multiple">
+                                    <option value="" selected="selected">Все</option>
+                                    <option value="221-ZИС">221-ZИС</option>
+                                    <option value="22101">22101</option>
+                                    <option value="22102">22102</option>
+                                    <option value="22103">22103</option>
+                                    <option value="22104">22104</option>
+                                    <option value="22105">22105</option>
+                                    <option value="22106">22106</option>
+                                    <option value="22107">22107</option>
+                                    <option value="22108">22108</option>
+                                    <option value="222-ZИС">222-ZИС</option>
+                                    <option value="22201">22201</option>
+                                    <option value="22202">22202</option>
+                                    <option value="22203">22203</option>
+                                    <option value="22204">22204</option>
+                                    <option value="22205">22205</option>
+                                    <option value="22206">22206</option>
+                                    <option value="22207">22207</option>
+                                    <option value="22208">22208</option>
+                                    <option value="223-ZИС">223-ZИС</option>
+                                    <option value="22301">22301</option>
+                                    <option value="22302">22302</option>
+                                    <option value="22303">22303</option>
+                                    <option value="22304">22304</option>
+                                    <option value="22305">22305</option>
+                                    <option value="22306">22306</option>
+                                    <option value="22307">22307</option>
+                                    <option value="22308">22308</option>
+                                    <option value="22401">22401</option>
+                                    <option value="22402">22402</option>
+                                    <option value="22403">22403</option>
+                                    <option value="22404">22404</option>
+                                    <option value="22405">22405</option>
+                                    <option value="22406">22406</option>
+                                    <option value="22407">22407</option>
+                                    <option value="22408">22408</option>
+                                    <option value="225-ZИС">225-ZИС</option>
+                                    <option value="22501">22501</option>
+                                    <option value="22502">22502</option>
+                                    <option value="22503">22503</option>
+                                    <option value="22505">22505</option>
+                                    <option value="22508">22508</option>
+                                    <option value="22509">22509</option>
+                                    <option value="22601">22601</option>
+                                    <option value="22603">22603</option>
+                                    <option value="22605">22605</option>
+                                    <option value="22608">22608</option>
+                                    <option value="22609">22609</option>
+                                </select>
+                            </div>
+                            <br>
+                            <label for="inp_department">Кафедра</label>
+                            <select name="department" id="inp_department" class="inp txt_inp">
+                                <option value="" selected="selected">Все</option>
+                                <option value="ПМиК">ПМиК</option>
+                                <option value="ИМО">ИМО</option>
+                                <option value="ГиТ">ГиТ</option>
+                                <option value="МА">МА</option>
+                                <option value="ТВиАД">ТВиАД</option>
+                                <option value="ТМОМИ">ТМОМИ</option>
+                            </select>
+                            <br>
+                            <label for="inp_student">Фамилия студента</label>
+                            <input type="text" name="name" id="inp_student" class="inp txt_inp">
+                            <br>
+                            <label for="inp_adviser">Руководитель</label>
+                            <input type="text" name="adviser-name" id="inp_adviser" class="inp txt_inp">
+                            <!--        <br>-->
+                            <!--             <label for="inp_theme">Тема</label>-->
+                            <!--        <input type="text"
+               name="theme-name"
+               id="inp_theme"
+               placeholder="В разработке)">-->
+                            <!--        <br>-->
+                            <!--                    <label for="inp_keywords">Ключевые слова</label>-->
+                            <!--        <input type="text"
+               name="keywords"
+               id="inp_keywords"
+               placeholder="В разработке)">-->
+                            <br>
+                            <div id="webd_form_show_additional" onclick="showHideAdditional();">Меньше ↑</div>
+                            <div id="webd_form_additional" class="">
+                                <label style="display:none" for="inp_have_index">Студенты</label>
+                                <select name="have-index" id="inp_have_index" class="inp txt_inp hidden">
+                                    <option value="registered" selected="selected">Зарегистрировавшие работы</option>
+                                    <option value="unregistered">Не зарегистрировавшие работы</option>
+                                    <option value="all">Все</option>
+                                </select>
+                                <!--label for="inp_have_index">Только зарегистрированные работы</label>
+<input type="checkbox" name="have-index" id="inp_have_index" value="true" checked="checked" class="inp" /-->
+                                <!--br/-->
+                                <label for="group_method">Сгруппировать</label>
+                                <select name="group-method" id="group_method" class="inp txt_inp">
+                                    <option value="default" selected="selected">По годам, кафедрам, группам</option>
+                                    <option value="flatten">Общим списком</option>
+                                </select>
+                                <br>
+                                <label for="sort_method">Отсортировать по</label>
+                                <select name="sort-method" id="sort_method" class="inp txt_inp">
+                                    <option value="by-student-name" selected="selected">Имени студента</option>
+                                    <option value="by-adviser-name">Имени руководителя</option>
+                                    <option value="by-identity-date">Дате регистрации</option>
+                                </select>
+                                <br>
+                                <label for="sort_order">Порядок сортировки</label>
+                                <select name="sort-order" id="sort_order" class="inp txt_inp">
+                                    <option value="ascending" selected="selected">По возрастанию</option>
+                                    <option value="descending">По убыванию</option>
+                                </select>
+                                <!--br/>
+			<label>Распоряжение об утверждении тем</label>
+			<input type="submit" id="btn_directive_bak" value="Для бакалавриата" class="inp" formaction="/query/directive_bak" formtarget="_blank" title="Генерирует RTF-файл по студентам бакалавриата, удовлетворяющих введенным в форму 'Поиск работ' параметрам." />
+<input type="submit" id="btn_directive_mag" value="Для магистратуры" class="inp" formaction="/query/directive_mag" formtarget="_blank" title="Генерирует RTF-файл по студентам магистратуры, удовлетворяющих введенным в форму 'Поиск работ' параметрам."/-->
+                                <br>
+                            </div>
+                            <input type="submit"
+                                   name="button"
+                                   id="btn_search"
+                                   value="Найти"
+                                   onclick="saveFields()"
+                                   class="inp"
+                                   title="Выводит таблицу с информацией о студентах, удовлетворяющих введенным в форму &#39;Поиск работ&#39; параметрам.">
+                            <input type="submit"
+                                   name="button"
+                                   id="btn_report"
+                                   value="Отчет"
+                                   class="inp"
+                                   formtarget="_blank"
+                                   title="Генерирует PDF-файл с информацией о студентах, удовлетворяющих введенным в форму &#39;Поиск работ&#39; параметрам.">
+                            <input type="submit"
+                                   id="btn_missing_report"
+                                   value="Список не зарегистрированных"
+                                   class="inp"
+                                   formaction="/list_unreg"
+                                   formtarget="_blank"
+                                   title="Генерирует PDF-файл с информацией о студентах, не зарегистрировавших работы в текущем году"
+                                   style="background-color: red">
+                        </form>
+                        <div id="webd_result"></div>
+                    </div>
+                {% endblock content %}
+                <hr>
+            </div>
+        
+            {% block table %}
+            {% if message is defined %}<p>{{ message }}</p>{% endif %}
+
+            <div id="start_table"></div>
+            {% if data is defined %}
+                {% if flatten==False %}
+                    {% for year in data.keys() %}
+                        <h2>{{ year }}-{{ year+1}}уч. год ({{ count_data[year]['count'] }} раб.)</h2>
+                        {% for dep in data[year].keys() %}
+                            <h3>Кафедра {{ dep }} ({{ count_data[year][dep]['count'] }} раб.)</h3>
+
+                            {% for group in data[year][dep].keys() %}
+                                <h4>Группа {{ group }} ({{ count_data[year][dep][group] }} раб.)</h4>
+
+                                <table class="webd_result_table">
+                                    <caption class="webd_rt_caption"></caption>
+                                    <tbody>
+                                        <tr class="webd_rt_head">
+                                            <th class="webd_rt_head_cell webd_rt_num_cell">№</th>
+                                            <th class="webd_rt_head_cell webd_rt_title_cell">Название работы</th>
+                                            <th class="webd_rt_head_cell webd_rt_name_cell">Ф.И.О. студента</th>
+                                            <th class="webd_rt_head_cell webd_rt_adviser_cell">Ф.И.О. руководителя</th>
+                                            <th class="webd_rt_head_cell webd_rt_sl_cell">Пр. отчет</th>
+                                            <th class="webd_rt_head_cell webd_rt_sl_cell">Пр. ЭП</th>
+                                            {% if group[2:3]|string in ['1','2','3','5'] %}<th class="webd_rt_head_cell webd_rt_sl_cell">Отчет</th>{% endif %}
+                                            {% if group[2:3]|string in ['1','2','3','5'] %}<th class="webd_rt_head_cell webd_rt_sl_cell">ЭП</th>{% endif %}
+                                            {% if group[2:3]|string in ['4','6'] %}
+                                                <th class="webd_rt_head_cell webd_rt_sl_cell">Отчет по практике НИР</th>
+                                            {% endif %}
+                                            {% if group[2:3]|string in ['4','6'] %}<th class="webd_rt_head_cell webd_rt_sl_cell">Текст ВКР</th>{% endif %}
+                                            {% if group[2:3]|string in ['4','6'] %}
+                                                <th class="webd_rt_head_cell webd_rt_sl_cell">Презент. ВКР</th>
+                                            {% endif %}
+                                            {% if group[2:3]|string in ['4','6'] %}
+                                                <th class="webd_rt_head_cell webd_rt_sl_cell">Проверка на плагиат</th>
+                                            {% endif %}
+                                            {% if group[2:3]|string in ['4','6'] %}<th class="webd_rt_head_cell webd_rt_sl_cell">Отзыв руковод.</th>{% endif %}
+                                            {% if group[2:3]|string =='6' %}<th class="webd_rt_head_cell webd_rt_sl_cell">Рецензия</th>{% endif %}
+                                        </tr>
+                                        {% set nsc = namespace(counter=0) %}
+                                        {% for e in data[year][dep][group] %}
+                                            {% set nsc.counter = nsc.counter+1 %}
+                                            <tr class="webd_rt_row">
+                                                <td class="webd_rt_cell webd_rt_num_cell">{{ nsc.counter }}</td>
+                                                <td class="webd_rt_cell webd_rt_title_cell">{{ e.title }}</td>
+                                                <td class="webd_rt_cell webd_rt_name_cell" title="{{ e.student }}">{{ e.name }}</td>
+                                                <td class="webd_rt_cell webd_rt_adviser_cell">{{ e.tutor }}</td>
+                                                {% if file_exists('report.pdf',e.student,year) %}
+                                                    {% if e.in_time is defined %}
+                                                        {% if e.in_time[0] == '1' %}
+                                                            <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file_in_time">
+                                                            {% else %}
+                                                                <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file">
+                                                                {% endif %}
+                                                            {% endif %}
+                                                            <a href="/download/{{ e.student }}/{{ year }}/report.pdf"
+                                                               target="_blank">
+                                                                <img alt="PDF" src="{{ url_for('static',filename='img/pdf_icon.png') }}">
+                                                            </a>
+                                                        </td>
+                                                    {% else %}
+                                                        <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_no_file"></td>
+                                                    {% endif %}
+                                                    {% if file_exists('slides.pdf',e.student,year) %}
+                                                        {% if e.in_time is defined %}
+                                                            {% if e.in_time[1] == '1' %}
+                                                                <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file_in_time">
+                                                                {% else %}
+                                                                    <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file">
+                                                                    {% endif %}
+                                                                {% endif %}
+                                                                <a href="/download/{{ e.student }}/{{ year }}/slides.pdf">
+                                                                    <img alt="PDF" src="{{ url_for('static',filename='img/pdf_icon.png') }}">
+                                                                </a>
+                                                            </td>
+                                                        {% else %}
+                                                            <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_no_file"></td>
+                                                        {% endif %}
+                                                        {% if group[2:3]|string in ['4','6'] %}
+                                                            {% if file_exists('practic_report.pdf',e.student,year) %}
+                                                                {% if e.in_time is defined %}
+                                                                    {% if e.in_time[2] == '1' %}
+                                                                        <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file_in_time">
+                                                                        {% else %}
+                                                                            <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file">
+                                                                            {% endif %}
+                                                                        {% endif %}
+                                                                        <a href="/download/{{ e.student }}/{{ year }}/practic_report.pdf">
+                                                                            <img alt="PDF" src="{{ url_for('static',filename='img/pdf_icon.png') }}">
+                                                                        </a>
+                                                                    </td>
+                                                                {% else %}
+                                                                    <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_no_file"></td>
+                                                                {% endif %}
+                                                            {% endif %}
+                                                            {% if file_exists('final_report.pdf',e.student,year) %}
+                                                                {% if e.in_time is defined %}
+                                                                    {% if e.in_time[3] == '1' %}
+                                                                        <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file_in_time">
+                                                                        {% else %}
+                                                                            <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file">
+                                                                            {% endif %}
+                                                                        {% endif %}
+                                                                        <a href="/download/{{ e.student }}/{{ year }}/final_report.pdf">
+                                                                            <img alt="PDF" src="{{ url_for('static',filename='img/pdf_icon.png') }}">
+                                                                        </a>
+                                                                    </td>
+                                                                {% else %}
+                                                                    <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_no_file"></td>
+                                                                {% endif %}
+                                                                {% if file_exists('final_slides.pdf',e.student,year) %}
+                                                                    {% if e.in_time is defined %}
+                                                                        {% if e.in_time[4] == '1' %}
+                                                                            <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file_in_time">
+                                                                            {% else %}
+                                                                                <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file">
+                                                                                {% endif %}
+                                                                            {% endif %}
+                                                                            <a href="/download/{{ e.student }}/{{ year }}/final_slides.pdf">
+                                                                                <img alt="PDF" src="{{ url_for('static',filename='img/pdf_icon.png') }}">
+                                                                            </a>
+                                                                        </td>
+                                                                    {% else %}
+                                                                        <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_no_file"></td>
+                                                                    {% endif %}
+                                                                    {% if group[2:3]|string in ['4','6'] %}
+                                                                        {% if file_exists('antiplagiat.pdf',e.student,year) %}
+                                                                            {% if e.in_time is defined %}
+                                                                                {% if e.in_time[5] == '1' %}
+                                                                                    <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file_in_time">
+                                                                                    {% else %}
+                                                                                        <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file">
+                                                                                        {% endif %}
+                                                                                    {% endif %}
+                                                                                    <a href="/download/{{ e.student }}/{{ year }}/antiplagiat.pdf">
+                                                                                        <img alt="PDF" src="{{ url_for('static',filename='img/pdf_icon.png') }}">
+                                                                                    </a>
+                                                                                </td>
+                                                                            {% else %}
+                                                                                <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_no_file"></td>
+                                                                            {% endif %}
+                                                                        {% endif %}
+                                                                        {% if group[2:3]|string in ['4','6'] %}
+                                                                            {% if file_exists('review.pdf',e.student,year) %}
+                                                                                {% if e.in_time is defined %}
+                                                                                    {% if e.in_time[6] == '1' %}
+                                                                                        <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file_in_time">
+                                                                                        {% else %}
+                                                                                            <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file">
+                                                                                            {% endif %}
+                                                                                        {% endif %}
+                                                                                        <a href="/download/{{ e.student }}/{{ year }}/review.pdf">
+                                                                                            <img alt="PDF" src="{{ url_for('static',filename='img/pdf_icon.png') }}">
+                                                                                        </a>
+                                                                                    </td>
+                                                                                {% else %}
+                                                                                    <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_no_file"></td>
+                                                                                {% endif %}
+                                                                            {% endif %}
+                                                                            {% if group[2:3]|string =='6' %}
+                                                                                {% if file_exists('final_review.pdf',e.student,year) %}
+                                                                                    {% if e.in_time is defined %}
+                                                                                        {% if e.in_time[7] == '1' %}
+                                                                                            <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file_in_time">
+                                                                                            {% else %}
+                                                                                                <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file">
+                                                                                                {% endif %}
+                                                                                            {% endif %}
+                                                                                            <a href="/download/{{ e.student }}/{{ year }}/final_review.pdf">
+                                                                                                <img alt="PDF" src="{{ url_for('static',filename='img/pdf_icon.png') }}">
+                                                                                            </a>
+                                                                                        </td>
+                                                                                    {% else %}
+                                                                                        <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_no_file"></td>
+                                                                                    {% endif %}
+                                                                                {% endif %}
+                                                                            </tr>
+                                                                        {% endfor %}
+                                                                    </table>
+                                                                {% endfor %}
+                                                            {% endfor %}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                    {% if flatten==True %}
+                                                        {% if total_count is defined %}<h2>Всего работ: {{ total_count }}</h2>{% endif %}
+                                                        <table class="webd_result_table">
+                                                            <caption class="webd_rt_caption"></caption>
+                                                            <tbody>
+                                                                <tr class="webd_rt_head">
+                                                                    <th class="webd_rt_head_cell webd_rt_num_cell">№</th>
+                                                                    <th class="webd_rt_head_cell webd_rt_title_cell">Название работы</th>
+                                                                    <th class="webd_rt_head_cell webd_rt_name_cell">Ф.И.О. студента</th>
+                                                                    <th class="webd_rt_head_cell webd_rt_adviser_cell">Ф.И.О. руководителя</th>
+                                                                    <th class="webd_rt_head_cell webd_rt_sl_cell">Пр. отчет</th>
+                                                                    <th class="webd_rt_head_cell webd_rt_sl_cell">Пр. ЭП</th>
+                                                                    {% if detail_level == 1 %}<th class="webd_rt_head_cell webd_rt_sl_cell">Отчет</th>{% endif %}
+                                                                    {% if detail_level == 1 %}<th class="webd_rt_head_cell webd_rt_sl_cell">ЭП</th>{% endif %}
+                                                                    {% if detail_level in [2,3] %}<th class="webd_rt_head_cell webd_rt_sl_cell">Отчет по практике НИР</th>{% endif %}
+                                                                    {% if detail_level in [2,3] %}<th class="webd_rt_head_cell webd_rt_sl_cell">Текст ВКР</th>{% endif %}
+                                                                    {% if detail_level in [2,3] %}<th class="webd_rt_head_cell webd_rt_sl_cell">Презент. ВКР</th>{% endif %}
+                                                                    {% if detail_level in [2,3] %}<th class="webd_rt_head_cell webd_rt_sl_cell">Проверка на плагиат</th>{% endif %}
+                                                                    {% if detail_level in [2,3] %}<th class="webd_rt_head_cell webd_rt_sl_cell">Отзыв руковод.</th>{% endif %}
+                                                                    {% if detail_level == 3 %}<th class="webd_rt_head_cell webd_rt_sl_cell">Рецензия</th>{% endif %}
+                                                                </tr>
+                                                                {% set nsc2 = namespace(counter=0) %}
+                                                                {% for e in data %}
+                                                                    {% set nsc2.counter = nsc2.counter+1 %}
+                                                                    <tr class="webd_rt_row">
+                                                                        <td class="webd_rt_cell webd_rt_num_cell">{{ nsc2.counter }}</td>
+                                                                        <td class="webd_rt_cell webd_rt_title_cell">{{ e.title }}</td>
+                                                                        <td class="webd_rt_cell webd_rt_name_cell" title="{{ e.student }}">{{ e.studentName }}</td>
+                                                                        <td class="webd_rt_cell webd_rt_adviser_cell">{{ e.tutor_name }}</td>
+                                                                        {% if file_exists('report.pdf',e.student,e.year) %}
+                                                                            {% if e.in_time is defined %}
+                                                                                {% if e.in_time[0] == '1' %}
+                                                                                    <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file_in_time">
+                                                                                    {% else %}
+                                                                                        <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file">
+                                                                                        {% endif %}
+                                                                                    {% endif %}
+                                                                                    <a href="/download/{{ e.student }}/{{ e.year }}/report.pdf">
+                                                                                        <img alt="PDF" src="{{ url_for('static',filename='img/pdf_icon.png') }}">
+                                                                                    </a>
+                                                                                </td>
+                                                                            {% else %}
+                                                                                <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_no_file"></td>
+                                                                            {% endif %}
+                                                                            {% if file_exists('slides.pdf',e.student,e.year) %}
+                                                                                {% if e.in_time is defined %}
+                                                                                    {% if e.in_time[1] == '1' %}
+                                                                                        <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file_in_time">
+                                                                                        {% else %}
+                                                                                            <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file">
+                                                                                            {% endif %}
+                                                                                        {% endif %}
+                                                                                        <a href="/download/{{ e.student }}/{{ e.year }}/slides.pdf">
+                                                                                            <img alt="PDF" src="{{ url_for('static',filename='img/pdf_icon.png') }}">
+                                                                                        </a>
+                                                                                    </td>
+                                                                                {% else %}
+                                                                                    <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_no_file"></td>
+                                                                                {% endif %}
+                                                                                {% if detail_level in [2,3] %}
+                                                                                    {% if file_exists('practic_report.pdf',e.student,e.year) %}
+                                                                                        {% if e.in_time is defined %}
+                                                                                            {% if e.in_time[2] == '1' %}
+                                                                                                <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file_in_time">
+                                                                                                {% else %}
+                                                                                                    <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file">
+                                                                                                    {% endif %}
+                                                                                                {% endif %}
+                                                                                                <a href="/download/{{ e.student }}/{{ e.year }}/practic_report.pdf">
+                                                                                                    <img alt="PDF" src="{{ url_for('static',filename='img/pdf_icon.png') }}">
+                                                                                                </a>
+                                                                                            </td>
+                                                                                        {% else %}
+                                                                                            <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_no_file"></td>
+                                                                                        {% endif %}
+                                                                                    {% endif %}
+                                                                                    {% if file_exists('final_report.pdf',e.student,e.year) %}
+                                                                                        {% if e.in_time is defined %}
+                                                                                            {% if e.in_time[3] == '1' %}
+                                                                                                <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file_in_time">
+                                                                                                {% else %}
+                                                                                                    <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file">
+                                                                                                    {% endif %}
+                                                                                                {% endif %}
+                                                                                                <a href="/download/{{ e.student }}/{{ e.year }}/final_report.pdf">
+                                                                                                    <img alt="PDF" src="{{ url_for('static',filename='img/pdf_icon.png') }}">
+                                                                                                </a>
+                                                                                            </td>
+                                                                                        {% else %}
+                                                                                            <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_no_file"></td>
+                                                                                        {% endif %}
+                                                                                        {% if file_exists('final_slides.pdf',e.student,e.year) %}
+                                                                                            {% if e.in_time is defined %}
+                                                                                                {% if e.in_time[4] == '1' %}
+                                                                                                    <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file_in_time">
+                                                                                                    {% else %}
+                                                                                                        <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file">
+                                                                                                        {% endif %}
+                                                                                                    {% endif %}
+                                                                                                    <a href="/download/{{ e.student }}/{{ e.year }}/final_slides.pdf">
+                                                                                                        <img alt="PDF" src="{{ url_for('static',filename='img/pdf_icon.png') }}">
+                                                                                                    </a>
+                                                                                                </td>
+                                                                                            {% else %}
+                                                                                                <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_no_file"></td>
+                                                                                            {% endif %}
+                                                                                            {% if detail_level in [2,3] %}
+                                                                                                {% if file_exists('antiplagiat.pdf',e.student,e.year) %}
+                                                                                                    {% if e.in_time is defined %}
+                                                                                                        {% if e.in_time[5] == '1' %}
+                                                                                                            <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file_in_time">
+                                                                                                            {% else %}
+                                                                                                                <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file">
+                                                                                                                {% endif %}
+                                                                                                            {% endif %}
+                                                                                                            <a href="/download/{{ e.student }}/{{ e.year }}/antiplagiat.pdf">
+                                                                                                                <img alt="PDF" src="{{ url_for('static',filename='img/pdf_icon.png') }}">
+                                                                                                            </a>
+                                                                                                        </td>
+                                                                                                    {% else %}
+                                                                                                        <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_no_file"></td>
+                                                                                                    {% endif %}
+                                                                                                {% endif %}
+                                                                                                {% if detail_level in [2,3] %}
+                                                                                                    {% if file_exists('review.pdf',e.student,e.year) %}
+                                                                                                        {% if e.in_time is defined %}
+                                                                                                            {% if e.in_time[6] == '1' %}
+                                                                                                                <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file_in_time">
+                                                                                                                {% else %}
+                                                                                                                    <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file">
+                                                                                                                    {% endif %}
+                                                                                                                {% endif %}
+                                                                                                                <a href="/download/{{ e.student }}/{{ e.year }}/review.pdf">
+                                                                                                                    <img alt="PDF" src="{{ url_for('static',filename='img/pdf_icon.png') }}">
+                                                                                                                </a>
+                                                                                                            </td>
+                                                                                                        {% else %}
+                                                                                                            <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_no_file"></td>
+                                                                                                        {% endif %}
+                                                                                                    {% endif %}
+                                                                                                    {% if detail_level == 3 %}
+                                                                                                        {% if file_exists('final_review.pdf',e.student,e.year) %}
+                                                                                                            {% if e.in_time is defined %}
+                                                                                                                {% if e.in_time[7] == '1' %}
+                                                                                                                    <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file_in_time">
+                                                                                                                    {% else %}
+                                                                                                                        <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_has_file">
+                                                                                                                        {% endif %}
+                                                                                                                    {% endif %}
+                                                                                                                    <a href="/download/{{ e.student }}/{{ e.year }}/final_review.pdf">
+                                                                                                                        <img alt="PDF" src="{{ url_for('static',filename='img/pdf_icon.png') }}">
+                                                                                                                    </a>
+                                                                                                                </td>
+                                                                                                            {% else %}
+                                                                                                                <td class="webd_rt_cell webd_rt_intsl_cell webd_rt_no_file"></td>
+                                                                                                            {% endif %}
+                                                                                                        {% endif %}
+                                                                                                    </tr>
+                                                                                                {% endfor %}
+                                                                                            </table>
+                                                                                        {% endif %}
+                                                                                    {% endif %}
+                                                                                    {% endblock table %}
+                                                                                </body>
+                                                                            </html>
